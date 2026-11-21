@@ -12,6 +12,7 @@ public class AppointmentService {
     public List<Models.AvailabilitySlot> getAvailableSlots() throws SQLException {
         List<Models.AvailabilitySlot> list = new ArrayList<>();
         String sql = "SELECT ca.availability_id, ca.counsellor_id, ca.slot_start, ca.slot_end, ca.is_available, " +
+                     "ca.session_mode, ca.meeting_link, ca.location, ca.notes, " +
                      "c.full_name AS counsellor_name, c.specialization " +
                      "FROM counsellor_availability ca " +
                      "JOIN counsellors c ON ca.counsellor_id = c.counsellor_id " +
@@ -31,6 +32,11 @@ public class AppointmentService {
                 );
                 s.counsellorName = rs.getString("counsellor_name");
                 s.specialization = rs.getString("specialization");
+                s.sessionMode = rs.getString("session_mode");
+                s.meetingLink = rs.getString("meeting_link");
+                s.location = rs.getString("location");
+                s.notes = rs.getString("notes");
+                if (s.sessionMode == null) s.sessionMode = "OFFLINE";
                 list.add(s);
             }
         }
@@ -303,11 +309,26 @@ public class AppointmentService {
                 }
             }
 
-            String insertSql = "INSERT INTO counsellor_availability (counsellor_id, slot_start, slot_end, is_available) VALUES (?, ?, ?, 1)";
+            String cleanMode = "ONLINE".equalsIgnoreCase(mode) ? "ONLINE" : "OFFLINE";
+            if ("ONLINE".equals(cleanMode)) {
+                if (meetingLink == null || meetingLink.trim().isEmpty()) {
+                    throw new Exception("A meeting link is required for online sessions.");
+                }
+            } else if (location == null || location.trim().isEmpty()) {
+                location = "Counselling Room 204";
+            }
+
+            String insertSql = "INSERT INTO counsellor_availability "
+                + "(counsellor_id, slot_start, slot_end, is_available, session_mode, meeting_link, location, notes) "
+                + "VALUES (?, ?, ?, 1, ?, ?, ?, ?)";
             try (PreparedStatement iStmt = conn.prepareStatement(insertSql)) {
                 iStmt.setInt(1, counsellorId);
                 iStmt.setTimestamp(2, start);
                 iStmt.setTimestamp(3, end);
+                iStmt.setString(4, cleanMode);
+                iStmt.setString(5, "ONLINE".equals(cleanMode) ? meetingLink.trim() : null);
+                iStmt.setString(6, "OFFLINE".equals(cleanMode) ? location.trim() : null);
+                iStmt.setString(7, notes);
                 iStmt.executeUpdate();
             }
         }
@@ -380,7 +401,8 @@ public class AppointmentService {
     // ---------------------------------------------------------
     public List<Models.AvailabilitySlot> getCounsellorAvailabilitySlots(int counsellorId) throws SQLException {
         List<Models.AvailabilitySlot> list = new ArrayList<>();
-        String sql = "SELECT availability_id, counsellor_id, slot_start, slot_end, is_available " +
+        String sql = "SELECT availability_id, counsellor_id, slot_start, slot_end, is_available, " +
+                     "session_mode, meeting_link, location, notes " +
                      "FROM counsellor_availability " +
                      "WHERE counsellor_id = ? " +
                      "ORDER BY slot_start DESC";
@@ -397,6 +419,11 @@ public class AppointmentService {
                         rs.getTimestamp("slot_end"),
                         rs.getInt("is_available") == 1
                     );
+                    s.sessionMode = rs.getString("session_mode");
+                    s.meetingLink = rs.getString("meeting_link");
+                    s.location = rs.getString("location");
+                    s.notes = rs.getString("notes");
+                    if (s.sessionMode == null) s.sessionMode = "OFFLINE";
                     list.add(s);
                 }
             }

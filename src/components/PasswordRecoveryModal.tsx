@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { api } from '../api/client';
 import { 
   PixelButton, 
@@ -36,6 +36,12 @@ export const PasswordRecoveryModal: React.FC<PasswordRecoveryModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (devCodeHint) {
+      setCode(devCodeHint);
+    }
+  }, [devCodeHint]);
 
   if (!isOpen) return null;
 
@@ -245,6 +251,9 @@ export const PasswordRecoveryModal: React.FC<PasswordRecoveryModalProps> = ({
               </label>
               <input
                 type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                autoComplete="one-time-code"
                 required
                 maxLength={6}
                 value={code}
