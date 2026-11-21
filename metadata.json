@@ -1,0 +1,6 @@
+{
+  "name": "CampusCare - Student Wellness & Counselling System",
+  "description": "Student wellness screening and counselling coordination system with appointment scheduling, counsellor management, and confidential wellness tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

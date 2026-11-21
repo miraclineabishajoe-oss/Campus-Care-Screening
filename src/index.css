@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-pixel: 'Silkscreen', monospace;
+
+    /* Theme Palette: Cream, Lavender, Mint, Ink */
+    --color-cream-base: #FAF8F5;
+    --color-cream-muted: #F4EFEA;
+    --color-cream-border: #E8E0D5;
+    --color-cream-card: #FFFFFF;
+
+    --color-lavender-50: #F7F5FC;
+    --color-lavender-100: #EFEAF8;
+    --color-lavender-200: #DDD4F0;
+    --color-lavender-300: #C2B3E4;
+    --color-lavender-400: #9F8CCE;
+    --color-lavender-500: #7E65B7;
+    --color-lavender-600: #684FA0;
+    --color-lavender-700: #543E82;
+    --color-lavender-800: #3E2D62;
+    --color-lavender-900: #2C1F48;
+
+    --color-mint-50: #F2FAF6;
+    --color-mint-100: #E0F4EA;
+    --color-mint-200: #BFECD3;
+    --color-mint-300: #8ED6B2;
+    --color-mint-400: #5ABF8F;
+    --color-mint-500: #389E6E;
+    --color-mint-600: #297D56;
+    --color-mint-700: #1D5E40;
+    --color-mint-800: #164630;
+    --color-mint-900: #0F3523;
+
+    --color-ink-primary: #231E2C;
+    --color-ink-secondary: #534B62;
+    --color-ink-muted: #7E7491;
+
+    --pixel-border-dark: #2B2438;
+    --pixel-border-soft: #D6CCE8;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-cream-base);
+    color: var(--color-ink-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Pixel Typography helper */
+.font-pixel {
+  font-family: 'Silkscreen', monospace;
+  letter-spacing: -0.02em;
+}
+
+/* Crisp Pixel Shadows */
+.pixel-shadow-sm {
+  box-shadow: 2px 2px 0px #2B2438;
+}
+
+.pixel-shadow {
+  box-shadow: 3px 3px 0px #2B2438;
+}
+
+.pixel-shadow-lg {
+  box-shadow: 4px 4px 0px #2B2438;
+}
+
+.pixel-shadow-lavender {
+  box-shadow: 3px 3px 0px #C2B3E4;
+}
+
+.pixel-shadow-mint {
+  box-shadow: 3px 3px 0px #9BDCB8;
+}
+
+.pixel-shadow-cream {
+  box-shadow: 3px 3px 0px #D8CFC0;
+}
+
+/* Subtle Pixel Interactive Lift */
+.pixel-interactive {
+  transition: transform 0.08s ease-in-out, box-shadow 0.08s ease-in-out;
+}
+
+.pixel-interactive:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #2B2438;
+}
+
+.pixel-interactive:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #2B2438;
+}
+
+/* Soft Pixel Background Patterns */
+.pixel-pattern-grid {
+  background-image: 
+    linear-gradient(to right, rgba(126, 101, 183, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(126, 101, 183, 0.05) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.pixel-pattern-dots {
+  background-image: radial-gradient(rgba(126, 101, 183, 0.12) 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
+}
+
+.pixel-pattern-mint-grid {
+  background-image: 
+    linear-gradient(to right, rgba(90, 191, 143, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(90, 191, 143, 0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Custom Pixel Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F4EFEA;
+  border-left: 2px solid #2B2438;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C2B3E4;
+  border: 2px solid #2B2438;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7E65B7;
+}
+
+/* Accessible outline for keyboard users */
+:focus-visible {
+  outline: 2px solid #7E65B7 !important;
+  outline-offset: 2px !important;
+}
